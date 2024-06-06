@@ -4,7 +4,7 @@
 % lb=[lb1,lb2,...,lbn] where lbn is the lower bound of variable n (ANN = 36)
 % ub=[ub1,ub2,...,ubn] where ubn is the upper bound of variable n (ANN = 36)
 
-GW=45;
+GW=50;
 S=400;
 dim=36;
 lb =  [-10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10];   % Lower Bound of Decision Variables
