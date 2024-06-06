@@ -1,6 +1,6 @@
 % Define your cost function which is (MPPT for PV system @obj)
 % ANN size is 36 variables
-% Set GWO parameters (population size (GW), maximum iterations (Step))
+% Set GWO parameters (population size (GW), maximum iterations (Step (S)))
 % lb=[lb1,lb2,...,lbn] where lbn is the lower bound of variable n (ANN = 36)
 % ub=[ub1,ub2,...,ubn] where ubn is the upper bound of variable n (ANN = 36)
 
