@@ -98,7 +98,7 @@ assignin('base','w34',x(34))
 assignin('base','w35',x(35))
 assignin('base','w36',x(36))
 
-simout=sim('ANNmtwoinputsn.slx'); %% To capture the error, need to run the Simulink file.
+simout=sim('Your_Simulink_file_name.slx'); %% To capture the error, need to run the Simulink file.
   
  e=abs(e2);
   e1=sum(e);  
