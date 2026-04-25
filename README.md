@@ -148,6 +148,65 @@ for advanced photovoltaic energy systems.
 
 ---
 
+---
+
+## ⚠️ Important Note on Simulink Model
+
+This repository provides the **ANN–GWO optimization framework** and MATLAB implementation only.
+
+📌 The Simulink model used in the paper is **not included**.
+
+---
+
+## 🧩 How to Reproduce the Results
+
+To use this code, you need to build your own PV system model in Simulink.
+
+### Minimum Required System
+
+Your model should include:
+
+- ☀️ PV array model  
+- 🔼 DC–DC boost converter  
+- 🎯 PWM control (duty cycle driven by ANN output)  
+- 📉 MPPT evaluation signals  
+
+---
+
+## 🔗 MATLAB–Simulink Interface
+
+The optimization process exchanges data via MATLAB workspace variables.
+
+### 🔹 Input to Simulink
+
+- `ANN_weights`  
+  → Vector of ANN parameters optimized by GWO  
+  → Must be used inside your ANN controller to generate the duty cycle  
+
+---
+
+### 🔹 Outputs from Simulink (using *To Workspace*)
+
+You must export the following signals:
+
+| Signal | Description |
+|------|------------|
+| `power_error` | MPPT tracking error (e.g., difference from maximum achievable power) |
+| `voltage_error` | Deviation from desired DC output voltage (e.g., 600 V) |
+
+---
+
+## ⚙️ Simulation Requirements
+
+Your Simulink model must:
+
+- Run automatically using:
+```matlab
+sim('your_model_name.slx')
+
+---
+
+
 ## 📚 Citation
 
 If you use this work, please cite:
