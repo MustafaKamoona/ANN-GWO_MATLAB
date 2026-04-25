@@ -6,6 +6,23 @@ An Advanced ANN–Grey Wolf Optimizer (ANN–GWO) Framework for Maximum Power Po
 📄 Paper:
 👉 https://ieeexplore.ieee.org/document/10582686
 
+
+📌 Overview
+
+This repository provides the complete MATLAB/Simulink implementation of the proposed:
+
+Artificial Neural Network optimized by Grey Wolf Optimizer (ANN–GWO)
+
+for Maximum Power Point Tracking (MPPT) in photovoltaic (PV) systems.
+
+The method is designed for a 400 kW PV power plant and aims to:
+
+Dynamically track the maximum power point
+Adapt to irradiance and temperature variations
+Improve efficiency over conventional MPPT techniques
+
+As described in the paper , the proposed ANN–GWO integrates machine learning + metaheuristic optimization to achieve superior tracking performance under nonlinear and time-varying conditions.
+
 Implement intelligent MPPT based on an online optimization technique by Grey Wolf Optimizer (GWO) to Artificial Neural Network (ANN) called ANN-GWO for a PV modules power plant by MTALB/SIMULINK, the uploaded file is MATLAB Script. The ANN-GWO methodology is designed to enhance the efficiency of the PV system by adapting to varying environmental conditions. Therefore, use these codes for your PV SIMULINK model.  
 
 Cite this work of the paper:
