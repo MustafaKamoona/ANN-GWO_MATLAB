@@ -1,108 +1,92 @@
-% Define your cost function which is (MPPT for PV system @obj)
-% ANN size is 36 variables
-% Set GWO parameters (population size (GW), maximum iterations (Step (S)))
-% lb=[lb1,lb2,...,lbn] where lbn is the lower bound of variable n (ANN = 36)
-% ub=[ub1,ub2,...,ubn] where ubn is the upper bound of variable n (ANN = 36)
+%% ========================================================================
+%  ANN–GWO MPPT Optimization for PV Systems
+%  Author: Mustafa A. Kamoona
+%  Description:
+%  This script performs ANN weight optimization using Grey Wolf Optimizer
+%  for Maximum Power Point Tracking (MPPT) in PV systems.
+%
+%  Requirements:
+%  - MATLAB R2022b or newer
+%  - Simulink model: 'pv_model.slx' (rename accordingly)
+%
+% ========================================================================
 
-GW=50;
-S=400;
-dim=36;
-lb =  [-10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10];   % Lower Bound of Decision Variables
-ub =  [100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100];   % Upper Bound of Decision Variables
+clear; clc;
 
+%% -------------------- USER SETTINGS -------------------------------------
+GW  = 50;      % Number of Grey Wolves
+S   = 400;     % Max iterations
+dim = 36;      % ANN weights
 
-% Define GWO main file. Then:
+lb = -10 * ones(1, dim);   % Lower bounds
+ub = 100 * ones(1, dim);   % Upper bounds
 
-[Best_score,x,GWO_cg_curve]=GWO(GW,S,lb,ub,dim,@obj);
+simulink_model = 'pv_model.slx';   % <-- CHANGE THIS NAME
 
-assignin('base','w1',x(1))
-assignin('base','w2',x(2))
-assignin('base','w3',x(3))
-assignin('base','w4',x(4))
-assignin('base','w5',x(5))
-assignin('base','w6',x(6))
-assignin('base','w7',x(7))
-assignin('base','w8',x(8))
-assignin('base','w9',x(9))
-assignin('base','w10',x(10))
-assignin('base','w11',x(11))
-assignin('base','w12',x(12))
-assignin('base','w13',x(13))
-assignin('base','w14',x(14))
-assignin('base','w15',x(15))
-assignin('base','w16',x(16))
-assignin('base','w17',x(17))
-assignin('base','w18',x(18))
-assignin('base','w19',x(19))
-assignin('base','w20',x(20))
-assignin('base','w21',x(21))
-assignin('base','w22',x(22))
-assignin('base','w23',x(23))
-assignin('base','w24',x(24))
-assignin('base','w25',x(25))
-assignin('base','w26',x(26))
-assignin('base','w27',x(27))
-assignin('base','w28',x(28))
-assignin('base','w29',x(29))
-assignin('base','w30',x(30))
-assignin('base','w31',x(31))
-assignin('base','w32',x(32))
-assignin('base','w33',x(33))
-assignin('base','w34',x(34))
-assignin('base','w35',x(35))
-assignin('base','w36',x(36))
-disp('     w1---------w36')
-disp(x) 
-disp('  Best_score')
+%% -------------------- RUN OPTIMIZATION ----------------------------------
+fprintf('Starting ANN-GWO optimization...\n');
+
+[Best_score, best_weights, curve] = GWO(GW, S, lb, ub, dim, ...
+    @(x) obj(x, simulink_model));
+
+fprintf('\nOptimization Completed!\n');
+
+%% -------------------- SAVE RESULTS --------------------------------------
+assignin('base', 'ANN_weights', best_weights);
+
+disp('Best Weights:')
+disp(best_weights)
+
+disp('Best Objective Value:')
 disp(Best_score)
 
+% Save results
+save('ANN_GWO_results.mat', 'best_weights', 'Best_score', 'curve');
 
-%save x.mat x 
-%disp('-----------------------------------------------------------')
+%% -------------------- PLOT CONVERGENCE ----------------------------------
+figure;
+plot(curve, 'LineWidth', 2);
+xlabel('Iteration');
+ylabel('Best Cost');
+title('GWO Convergence Curve');
+grid on;
 
-function Err=obj(x)
-assignin('base','w1',x(1))
-assignin('base','w2',x(2))
-assignin('base','w3',x(3))
-assignin('base','w4',x(4))
-assignin('base','w5',x(5))
-assignin('base','w6',x(6))
-assignin('base','w7',x(7))
-assignin('base','w8',x(8))
-assignin('base','w9',x(9))
-assignin('base','w10',x(10))
-assignin('base','w11',x(11))
-assignin('base','w12',x(12))
-assignin('base','w13',x(13))
-assignin('base','w14',x(14))
-assignin('base','w15',x(15))
-assignin('base','w16',x(16))
-assignin('base','w17',x(17))
-assignin('base','w18',x(18))
-assignin('base','w19',x(19))
-assignin('base','w20',x(20))
-assignin('base','w21',x(21))
-assignin('base','w22',x(22))
-assignin('base','w23',x(23))
-assignin('base','w24',x(24))
-assignin('base','w25',x(25))
-assignin('base','w26',x(26))
-assignin('base','w27',x(27))
-assignin('base','w28',x(28))
-assignin('base','w29',x(29))
-assignin('base','w30',x(30))
-assignin('base','w31',x(31))
-assignin('base','w32',x(32))
-assignin('base','w33',x(33))
-assignin('base','w34',x(34))
-assignin('base','w35',x(35))
-assignin('base','w36',x(36))
+%% ========================================================================
+%  OBJECTIVE FUNCTION
+% ========================================================================
+function Err = obj(x, model_name)
 
-simout=sim('Your_Simulink_file_name.slx'); %% To capture the error, need to run the Simulink file.
-  
- e=abs(e2);
-  e1=sum(e);  
-  ep1=abs(ep);
-  ep2=sum(ep1);
-Err=0.2*(e1)+0.5*(ep2) %Note (0.2 and 0.5 can be changed (adjust as needed)) 
+    % Send weights as a vector (clean way)
+    assignin('base', 'ANN_weights', x);
+
+    % Run Simulink model
+    try
+        simOut = sim(model_name, 'StopTime', '1');
+    catch
+        error('Simulink model not found or failed to run.');
+    end
+
+    % ---------------------------------------------------------------------
+    % IMPORTANT:
+    % You MUST define these signals inside your Simulink model:
+    %   - power_error  (tracking error)
+    %   - voltage_error (voltage deviation)
+    %
+    % Use "To Workspace" blocks with same names.
+    % ---------------------------------------------------------------------
+
+    try
+        e  = simOut.power_error;
+        ep = simOut.voltage_error;
+    catch
+        error('Required signals (power_error, voltage_error) not found.');
+    end
+
+    % Compute cost
+    e1  = sum(abs(e));
+    ep2 = sum(abs(ep));
+
+    % Weighted objective
+    Err = 0.2 * e1 + 0.5 * ep2;
+
 end
